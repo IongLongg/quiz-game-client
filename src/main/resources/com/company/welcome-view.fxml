@@ -1,0 +1,52 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.geometry.Insets?>
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
+<?import javafx.scene.control.TextField?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.VBox?>
+<?import javafx.scene.text.Font?>
+
+<VBox alignment="CENTER" prefHeight="680.0" prefWidth="700.0" spacing="20.0" xmlns="http://javafx.com/javafx/17" xmlns:fx="http://javafx.com/fxml/1" fx:controller="com.company.WelcomeController">
+    <padding>
+        <Insets bottom="20.0" left="20.0" right="20.0" top="20.0" />
+    </padding>
+   <children>
+      <BorderPane prefHeight="622.0" prefWidth="660.0">
+         <center>
+            <AnchorPane prefHeight="886.0" prefWidth="660.0" style="-fx-background-color: #E7869C;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label layoutX="153.0" layoutY="110.0" text="Username">
+                     <font>
+                        <Font name="Arial" size="25.0" />
+                     </font>
+                  </Label>
+                  <TextField fx:id="nameText" layoutX="296.0" layoutY="112.0" prefHeight="26.0" prefWidth="211.0" />
+                  <Button fx:id="joinButton" alignment="CENTER" layoutX="149.0" layoutY="247.0" mnemonicParsing="false" onAction="#joinGame" prefHeight="66.0" prefWidth="362.0" style="-fx-background-color: #A08F77;" text="JOIN NOW" textAlignment="JUSTIFY" textFill="WHITE">
+                     <font>
+                        <Font name="System Bold" size="24.0" />
+                     </font>
+                  </Button>
+                  <Label fx:id="alertText" alignment="CENTER" contentDisplay="CENTER" layoutX="147.0" layoutY="176.0" prefHeight="32.0" prefWidth="363.0" textAlignment="CENTER" textFill="YELLOW">
+                     <font>
+                        <Font size="22.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </center>
+         <top>
+            <AnchorPane prefHeight="271.0" prefWidth="660.0" style="-fx-background-color: #CF4672;" BorderPane.alignment="CENTER">
+               <children>
+                  <Label layoutX="98.0" layoutY="112.0" text="Welcome to Squiz Game" textFill="WHITE">
+                     <font>
+                        <Font name="Arial Bold" size="40.0" />
+                     </font>
+                  </Label>
+               </children>
+            </AnchorPane>
+         </top></BorderPane>
+   </children>
+</VBox>

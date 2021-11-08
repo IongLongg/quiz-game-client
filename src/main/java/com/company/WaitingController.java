@@ -8,11 +8,13 @@ import com.google.gson.Gson;
 import com.google.gson.reflect.*;
 import javafx.event.ActionEvent;
 import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
 import javafx.fxml.Initializable;
-import javafx.scene.control.Button;
-import javafx.scene.control.Label;
-import javafx.scene.control.ListView;
-import javafx.scene.control.SelectionMode;
+import javafx.scene.Node;
+import javafx.scene.Parent;
+import javafx.scene.Scene;
+import javafx.scene.control.*;
+import javafx.stage.Stage;
 
 import java.io.DataInputStream;
 import java.io.DataOutputStream;
@@ -21,9 +23,10 @@ import java.lang.reflect.Type;
 import java.net.URL;
 import java.util.ArrayList;
 import java.util.List;
+import java.util.Objects;
 import java.util.ResourceBundle;
 
-public class WaitingController implements Initializable {
+public class WaitingController {
     DataInputStream dis;
     DataOutputStream dos;
     ArrayList<Room> roomList;
@@ -41,12 +44,6 @@ public class WaitingController implements Initializable {
 
     @FXML
     private Button joinRoomBtn;
-
-
-    @Override
-    public void initialize(URL url, ResourceBundle resourceBundle) {
-
-    }
 
     public void setDataStream(DataInputStream dis, DataOutputStream dos) {
         this.dis = dis;
@@ -87,13 +84,48 @@ public class WaitingController implements Initializable {
             dos.writeUTF(jsonRequest);
             dos.flush();
 
-            String roomCode = dis.readUTF();
+            int roomCode = Integer.parseInt(dis.readUTF());
             System.out.println(roomCode);
             System.out.println("======");
-            String roomData = dis.readUTF();
-            System.out.println(roomData);
+            if (roomCode == RequestCode.ROOM_FULL) {
+                // thong bao khong vao duoc
+                Alert alert = new Alert(Alert.AlertType.INFORMATION);
+                alert.setTitle("Quiz game");
+                alert.setHeaderText("This room is not available");
+                alert.show();
+            } else if (roomCode == RequestCode.ROOM_WAIT) {
+                // chuyen man hinh cho
+                FXMLLoader fxmlLoader = new FXMLLoader(
+                    Objects.requireNonNull(getClass().getResource("loading-view.fxml"))
+                );
+                Parent loadingViewParent = (Parent) fxmlLoader.load();
+
+                LoadingController loadingController = fxmlLoader.getController();
+                loadingController.setDataStream(dis, dos);
+
+                Scene loadingScene = new Scene(loadingViewParent);
+                switchScene(event, loadingScene);
+            } else if (roomCode == RequestCode.ROOM_START) {
+                // chuyen man hinh cau hoi
+                FXMLLoader fxmlLoader = new FXMLLoader(
+                    Objects.requireNonNull(getClass().getResource("room-view.fxml"))
+                );
+                Parent roomViewParent = (Parent) fxmlLoader.load();
+
+                RoomController roomController = fxmlLoader.getController();
+                roomController.setDataStream(dis, dos);
+
+                Scene roomScene = new Scene(roomViewParent);
+                switchScene(event, roomScene);
+            }
         } catch (IOException e) {
             e.printStackTrace();
         }
+    }
+
+    void switchScene(ActionEvent event, Scene nextScene){
+        Stage window = (Stage) ((Node)event.getSource()).getScene().getWindow();
+        window.setScene(nextScene);
+        window.show();
     }
 }
